@@ -42,7 +42,12 @@ function Preview({ component, tall }: { component: ComponentRecord; tall?: boole
   <\/script>
 </body>
 </html>`
-  return <iframe title={`${component.title} live preview`} sandbox="allow-scripts" srcDoc={srcDoc} className={`w-full border-0 ${tall ? 'h-[480px]' : 'h-64'}`} />
+  return <iframe
+  title={`${component.title} live preview`}
+  sandbox="allow-scripts allow-same-origin"
+  srcDoc={srcDoc}
+  className={`w-full border-0 ${tall ? 'h-[480px]' : 'h-64'}`}
+/>
 }
 
 // ─── Code viewer (detail page only) ──────────────────────────────────────────
