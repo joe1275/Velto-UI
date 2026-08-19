@@ -23,16 +23,26 @@ function TagBadge({ tag }: { tag: string }) {
 }
 
 // ─── Live preview iframe ──────────────────────────────────────────────────────
-function Preview({ component, tall = false }: { component: ComponentRecord; tall?: boolean }) {
-  const srcDoc = `<!doctype html><html><head><style>html,body{margin:0;min-height:100%;background:#080b16;color:#f8f7ff;font-family:Arial,sans-serif}body{display:grid;place-items:center;padding:24px;box-sizing:border-box}</style></head><body>${component.code}</body></html>`
-  return (
-    <iframe
-      title={`${component.title} live preview`}
-      sandbox="allow-scripts"
-      srcDoc={srcDoc}
-      className={`w-full border-0 ${tall ? 'h-[480px]' : 'h-64'}`}
-    />
-  )
+function Preview({ component, tall }: { component: ComponentRecord; tall?: boolean }) {
+  const srcDoc = `<!doctype html>
+<html>
+<head>
+  <script src="https://cdn.tailwindcss.com"><\/script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"><\/script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"><\/script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>
+  <style>html,body{margin:0;min-height:100%;background:#080b16;}</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    ${component.code}
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(GlassCard));
+  <\/script>
+</body>
+</html>`
+  return <iframe title={`${component.title} live preview`} sandbox="allow-scripts" srcDoc={srcDoc} className={`w-full border-0 ${tall ? 'h-[480px]' : 'h-64'}`} />
 }
 
 // ─── Code viewer (detail page only) ──────────────────────────────────────────
